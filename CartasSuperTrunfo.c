@@ -13,6 +13,8 @@ int main() {
     int area;
     double PIB;
     int numero_de_pontos_turisticos;
+    double densidade_populacional;
+    double PIB_per_capita;
 
     printf("Digite o código da cidade: \n");
     scanf("%d", &codigo_da_cidade);
@@ -31,6 +33,14 @@ int main() {
 
     printf("Digite o número de pontos turísticos da cidade: \n");
     scanf("%d", &numero_de_pontos_turisticos);
+
+    //calculando a Densidade Populacional e o PIB per Capita.
+
+    densidade_populacional = (float) (populacao / area);
+
+    PIB_per_capita = (float) (PIB / populacao);
+
+
 
     
     // Sugestão: Defina variáveis separadas para cada atributo da cidade.
