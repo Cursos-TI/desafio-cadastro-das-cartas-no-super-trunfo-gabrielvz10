@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 // Função para calcular os atributos derivados
 int calcular_atributos(unsigned long int populacao, float area, double PIB, double *densidade_populacional, double *PIB_per_capita) {
@@ -8,73 +10,123 @@ int calcular_atributos(unsigned long int populacao, float area, double PIB, doub
 }
 
 // Função para comparar e exibir o vencedor de um atributo
-int comparar_atributo(char *atributo, double val1, double val2, char *nome1, char *nome2, char *estado1, char *estado2, int inverso) {
-    printf("\nComparação de cartas (Atributo: %s):\n", atributo);
-    printf("Carta 1 - %s (%s): %.2f\n", nome1, estado1, val1);
-    printf("Carta 2 - %s (%s): %.2f\n", nome2, estado2, val2);
-    
-    // Inverso significa que o valor maior é o perdedor
-    if ((inverso && val1 < val2) || (!inverso && val1 > val2)) {
-        printf("Resultado: Carta 1 (%s) venceu!\n", nome1);
-    } else {
-        printf("Resultado: Carta 2 (%s) venceu!\n", nome2);
+int comparar_atributo(int opcao, unsigned long int populacao1, unsigned long int populacao2, float area1, float area2, 
+                      double PIB1, double PIB2, int pontos_turisticos1, int pontos_turisticos2, 
+                      double densidade_populacional1, double densidade_populacional2, char *nome1, char *nome2) {
+    // Variáveis para armazenar os valores a serem comparados
+    double val1, val2;
+
+    switch (opcao) {
+        case 1: // Nome do país
+            printf("\nComparação de cartas (Atributo: Nome do País):\n");
+            printf("Carta 1 - %s\n", nome1);
+            printf("Carta 2 - %s\n", nome2);
+            printf("Resultado: Não há vencedor, apenas a exibição do nome.\n");
+            return 0;
+
+        case 2: // População
+            printf("\nComparação de cartas (Atributo: População):\n");
+            val1 = populacao1;
+            val2 = populacao2;
+            break;
+
+        case 3: // Área
+            printf("\nComparação de cartas (Atributo: Área):\n");
+            val1 = area1;
+            val2 = area2;
+            break;
+
+        case 4: // PIB
+            printf("\nComparação de cartas (Atributo: PIB):\n");
+            val1 = PIB1;
+            val2 = PIB2;
+            break;
+
+        case 5: // Número de pontos turísticos
+            printf("\nComparação de cartas (Atributo: Pontos Turísticos):\n");
+            val1 = pontos_turisticos1;
+            val2 = pontos_turisticos2;
+            break;
+
+        case 6: // Densidade demográfica
+            printf("\nComparação de cartas (Atributo: Densidade Demográfica):\n");
+            val1 = densidade_populacional1;
+            val2 = densidade_populacional2;
+            break;
+
+        default:
+            printf("Opção inválida.\n");
+            return -1;
     }
-    return 0; // Retorna 0 para indicar que a operação foi concluída com sucesso
+
+    // Exibindo as informações dos dois países
+    printf("Carta 1 - %s: %.2f\n", nome1, val1);
+    printf("Carta 2 - %s: %.2f\n", nome2, val2);
+
+    // Regras de comparação com if-else aninhado
+    if (opcao == 6) { // Para a Densidade Demográfica, vence quem tem menor valor
+        if (val1 < val2) {
+            printf("Resultado: Carta 1 (%s) venceu!\n", nome1);
+        } else if (val1 > val2) {
+            printf("Resultado: Carta 2 (%s) venceu!\n", nome2);
+        } else {
+            printf("Empate!\n");
+        }
+    } else { // Para os demais atributos, vence quem tem maior valor
+        if (val1 > val2) {
+            printf("Resultado: Carta 1 (%s) venceu!\n", nome1);
+        } else if (val1 < val2) {
+            printf("Resultado: Carta 2 (%s) venceu!\n", nome2);
+        } else {
+            printf("Empate!\n");
+        }
+    }
+
+    return 0;
 }
 
 int main() {
     // Dados da primeira cidade
-    char estado1[3], codigo1[10], nome1[50];
-    unsigned long int populacao1;
-    float area1;
-    double PIB1, densidade_populacional1, PIB_per_capita1;
-    int pontos_turisticos1;
-
-    // Entrada de dados para a primeira cidade
-    printf("Digite o estado da primeira cidade (sigla): ");
-    scanf("%s", estado1);
-    printf("Digite o código da primeira cidade: ");
-    scanf("%s", codigo1);
-    printf("Digite o nome da primeira cidade: ");
-    scanf("%s", nome1);
-    printf("Digite a população da primeira cidade: ");
-    scanf("%lu", &populacao1);
-    printf("Digite a área da primeira cidade: ");
-    scanf("%f", &area1);
-    printf("Digite o PIB da primeira cidade: ");
-    scanf("%lf", &PIB1);
-    printf("Digite o número de pontos turísticos da primeira cidade: ");
-    scanf("%d", &pontos_turisticos1);
-
-    calcular_atributos(populacao1, area1, PIB1, &densidade_populacional1, &PIB_per_capita1);
+    char nome1[50] = "CidadeA", estado1[3] = "SP", codigo1[10] = "001";
+    unsigned long int populacao1 = 12000000;
+    float area1 = 1500.5;
+    double PIB1 = 300000000000.0, densidade_populacional1, PIB_per_capita1;
+    int pontos_turisticos1 = 10;
 
     // Dados da segunda cidade
-    char estado2[3], codigo2[10], nome2[50];
-    unsigned long int populacao2;
-    float area2;
-    double PIB2, densidade_populacional2, PIB_per_capita2;
-    int pontos_turisticos2;
+    char nome2[50] = "CidadeB", estado2[3] = "RJ", codigo2[10] = "002";
+    unsigned long int populacao2 = 6000000;
+    float area2 = 800.5;
+    double PIB2 = 150000000000.0, densidade_populacional2, PIB_per_capita2;
+    int pontos_turisticos2 = 15;
 
-    // Entrada de dados para a segunda cidade
-    printf("Digite o estado da segunda cidade (sigla): ");
-    scanf("%s", estado2);
-    printf("Digite o código da segunda cidade: ");
-    scanf("%s", codigo2);
-    printf("Digite o nome da segunda cidade: ");
-    scanf("%s", nome2);
-    printf("Digite a população da segunda cidade: ");
-    scanf("%lu", &populacao2);
-    printf("Digite a área da segunda cidade: ");
-    scanf("%f", &area2);
-    printf("Digite o PIB da segunda cidade: ");
-    scanf("%lf", &PIB2);
-    printf("Digite o número de pontos turísticos da segunda cidade: ");
-    scanf("%d", &pontos_turisticos2);
-
+    // Calculando os atributos derivados
+    calcular_atributos(populacao1, area1, PIB1, &densidade_populacional1, &PIB_per_capita1);
     calcular_atributos(populacao2, area2, PIB2, &densidade_populacional2, &PIB_per_capita2);
 
-    // Comparação de um atributo escolhido no código
-    comparar_atributo("População", populacao1, populacao2, nome1, nome2, estado1, estado2, 0);
-    
+    int opcao;
+
+    // Inicializando a semente para o gerador de números aleatórios
+    srand(time(NULL));
+
+    do {
+        // Menu interativo
+        printf("\nEscolha o atributo para comparar:\n");
+        printf("1 - Nome do País\n");
+        printf("2 - População\n");
+        printf("3 - Área\n");
+        printf("4 - PIB\n");
+        printf("5 - Pontos Turísticos\n");
+        printf("6 - Densidade Demográfica\n");
+        printf("0 - Sair\n");
+        printf("Digite a opção: ");
+        scanf("%d", &opcao);
+
+        if (opcao != 0) {
+            comparar_atributo(opcao, populacao1, populacao2, area1, area2, PIB1, PIB2, pontos_turisticos1, pontos_turisticos2, 
+                               densidade_populacional1, densidade_populacional2, nome1, nome2);
+        }
+    } while (opcao != 0);
+
     return 0;
 }
