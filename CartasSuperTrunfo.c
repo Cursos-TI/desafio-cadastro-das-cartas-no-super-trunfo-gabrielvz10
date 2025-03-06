@@ -1,77 +1,80 @@
 #include <stdio.h>
-#include <string.h>
-
-// Estrutura para armazenar os dados das cidades
-typedef struct {
-    char estado[3];
-    char codigo[10];
-    char nome[50];
-    unsigned long int populacao;
-    float area;
-    double PIB;
-    int pontos_turisticos;
-    double densidade_populacional;
-    double PIB_per_capita;
-} Cidade;
 
 // Função para calcular os atributos derivados
-void calcular_atributos(Cidade *c) {
-    c->densidade_populacional = c->populacao / c->area;
-    c->PIB_per_capita = c->PIB / c->populacao;
+int calcular_atributos(unsigned long int populacao, float area, double PIB, double *densidade_populacional, double *PIB_per_capita) {
+    *densidade_populacional = populacao / area;
+    *PIB_per_capita = PIB / populacao;
+    return 0; // Retorna 0 para indicar que a operação foi concluída com sucesso
 }
 
-// Função para comparar um atributo específico e exibir o vencedor
-void comparar_atributo(char *atributo, double val1, double val2, Cidade c1, Cidade c2, int inverso) {
+// Função para comparar e exibir o vencedor de um atributo
+int comparar_atributo(char *atributo, double val1, double val2, char *nome1, char *nome2, char *estado1, char *estado2, int inverso) {
     printf("\nComparação de cartas (Atributo: %s):\n", atributo);
-    printf("Carta 1 - %s (%s): %.2f\n", c1.nome, c1.estado, val1);
-    printf("Carta 2 - %s (%s): %.2f\n", c2.nome, c2.estado, val2);
+    printf("Carta 1 - %s (%s): %.2f\n", nome1, estado1, val1);
+    printf("Carta 2 - %s (%s): %.2f\n", nome2, estado2, val2);
     
+    // Inverso significa que o valor maior é o perdedor
     if ((inverso && val1 < val2) || (!inverso && val1 > val2)) {
-        printf("Resultado: Carta 1 (%s) venceu!\n", c1.nome);
+        printf("Resultado: Carta 1 (%s) venceu!\n", nome1);
     } else {
-        printf("Resultado: Carta 2 (%s) venceu!\n", c2.nome);
+        printf("Resultado: Carta 2 (%s) venceu!\n", nome2);
     }
+    return 0; // Retorna 0 para indicar que a operação foi concluída com sucesso
 }
 
 int main() {
-    Cidade cidade1, cidade2;
+    // Dados da primeira cidade
+    char estado1[3], codigo1[10], nome1[50];
+    unsigned long int populacao1;
+    float area1;
+    double PIB1, densidade_populacional1, PIB_per_capita1;
+    int pontos_turisticos1;
 
     // Entrada de dados para a primeira cidade
     printf("Digite o estado da primeira cidade (sigla): ");
-    scanf("%s", cidade1.estado);
+    scanf("%s", estado1);
     printf("Digite o código da primeira cidade: ");
-    scanf("%s", cidade1.codigo);
+    scanf("%s", codigo1);
     printf("Digite o nome da primeira cidade: ");
-    scanf("%s", cidade1.nome);
+    scanf("%s", nome1);
     printf("Digite a população da primeira cidade: ");
-    scanf("%lu", &cidade1.populacao);
+    scanf("%lu", &populacao1);
     printf("Digite a área da primeira cidade: ");
-    scanf("%f", &cidade1.area);
+    scanf("%f", &area1);
     printf("Digite o PIB da primeira cidade: ");
-    scanf("%lf", &cidade1.PIB);
+    scanf("%lf", &PIB1);
     printf("Digite o número de pontos turísticos da primeira cidade: ");
-    scanf("%d", &cidade1.pontos_turisticos);
-    calcular_atributos(&cidade1);
+    scanf("%d", &pontos_turisticos1);
+
+    calcular_atributos(populacao1, area1, PIB1, &densidade_populacional1, &PIB_per_capita1);
+
+    // Dados da segunda cidade
+    char estado2[3], codigo2[10], nome2[50];
+    unsigned long int populacao2;
+    float area2;
+    double PIB2, densidade_populacional2, PIB_per_capita2;
+    int pontos_turisticos2;
 
     // Entrada de dados para a segunda cidade
     printf("Digite o estado da segunda cidade (sigla): ");
-    scanf("%s", cidade2.estado);
+    scanf("%s", estado2);
     printf("Digite o código da segunda cidade: ");
-    scanf("%s", cidade2.codigo);
+    scanf("%s", codigo2);
     printf("Digite o nome da segunda cidade: ");
-    scanf("%s", cidade2.nome);
+    scanf("%s", nome2);
     printf("Digite a população da segunda cidade: ");
-    scanf("%lu", &cidade2.populacao);
+    scanf("%lu", &populacao2);
     printf("Digite a área da segunda cidade: ");
-    scanf("%f", &cidade2.area);
+    scanf("%f", &area2);
     printf("Digite o PIB da segunda cidade: ");
-    scanf("%lf", &cidade2.PIB);
+    scanf("%lf", &PIB2);
     printf("Digite o número de pontos turísticos da segunda cidade: ");
-    scanf("%d", &cidade2.pontos_turisticos);
-    calcular_atributos(&cidade2);
+    scanf("%d", &pontos_turisticos2);
+
+    calcular_atributos(populacao2, area2, PIB2, &densidade_populacional2, &PIB_per_capita2);
 
     // Comparação de um atributo escolhido no código
-    comparar_atributo("População", cidade1.populacao, cidade2.populacao, cidade1, cidade2, 0);
+    comparar_atributo("População", populacao1, populacao2, nome1, nome2, estado1, estado2, 0);
     
     return 0;
 }
